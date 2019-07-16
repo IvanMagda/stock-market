@@ -1,0 +1,12 @@
+.container-main {
+  height: 100vh;
+  &--grid {
+    height: 100%;
+    &.nav-menu {
+      height: 5%;
+    }
+    &.content {
+      height: 95%;
+    }
+  }
+}
