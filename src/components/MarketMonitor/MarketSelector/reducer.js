@@ -1,23 +1,35 @@
-import { CHANGE_TYPE, CHANGE_PAIR, SYMBOLS, HISTORY } from "./actions";
+import {
+  CHANGE_PERIOD,
+  CHANGE_PAIR,
+  SYMBOLS,
+  HISTORY,
+  ERROR_PROXY
+} from "./actions";
 import { IS_LOADING } from "../../Api/utils";
 
 const defaultState = {
-  type: "",
+  period: "daily",
   pair: { crypto: "", fiat: "" },
   isLoading: false,
   symbols: [],
-  history: {}
+  history: [],
+  favorites: [],
+  error: ""
 };
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case "FAVORITES":
+      return { ...state, favorites: action.payload };
+    case ERROR_PROXY:
+      return { ...state, error: action.payload };
     case HISTORY:
-      return { ...state, history: { ...state.history, ...action.payload } };
+      return { ...state, history: action.payload };
     case IS_LOADING:
       return { ...state, isLoading: action.payload };
     case SYMBOLS:
       return { ...state, symbols: action.payload };
-    case CHANGE_TYPE:
-      return { ...state, type: action.payload };
+    case CHANGE_PERIOD:
+      return { ...state, period: action.payload };
     case CHANGE_PAIR:
       return { ...state, pair: { ...state.pair, ...action.payload } };
     default:

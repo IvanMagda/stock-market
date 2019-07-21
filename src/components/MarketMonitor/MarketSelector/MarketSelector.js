@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Grid } from "semantic-ui-react";
-import Type from "./Type";
+import Type from "./Period";
 import Pair from "./Pair";
 import Favorites from "./Favorites";
 

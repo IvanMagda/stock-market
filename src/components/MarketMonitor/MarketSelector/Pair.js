@@ -11,7 +11,7 @@ class Pair extends Component {
   }
 
   render() {
-    const { changePair, symbols } = this.props;
+    const { changePair, symbols, crypto, fiat } = this.props;
     return (
       <Segment basic>
         <Grid>
@@ -21,6 +21,7 @@ class Pair extends Component {
               selection
               fluid
               search
+              value={crypto}
               options={this.formatSymbols(symbols, 0, 3)}
               onChange={(e, value) => changePair({ crypto: value.value })}
             />
@@ -31,7 +32,12 @@ class Pair extends Component {
               selection
               fluid
               search
-              options={this.formatSymbols(symbols, 3, 6)}
+              value={fiat}
+              options={this.formatSymbols(
+                symbols.filter(i => i.includes(crypto)),
+                3,
+                6
+              )}
               onChange={(e, value) => changePair({ fiat: value.value })}
             />
           </Grid.Column>
@@ -42,7 +48,9 @@ class Pair extends Component {
 }
 
 const mapStateToProps = state => ({
-  symbols: state.market.symbols
+  symbols: state.market.symbols,
+  crypto: state.market.pair.crypto,
+  fiat: state.market.pair.fiat
 });
 
 const mapDispatchToProps = dispatch => ({

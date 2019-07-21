@@ -8,21 +8,26 @@ import {
   Tooltip
 } from "recharts";
 import { Segment, Grid } from "semantic-ui-react";
-import { changeType } from "../MarketSelector/actions";
+import { getGlobalMarket } from "../MarketSelector/actions";
 import { connect } from "react-redux";
 
 class Chart extends Component {
   render() {
     return (
-      <Grid.Column stretched width={12}>
+      <Grid.Column stretched width={11}>
         <Segment basic>
           <LineChart
             width={1200}
             height={650}
-            data={this.props.history.BTCUSD || []}
+            data={this.props.history}
             margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
           >
-            <Line type="monotone" dataKey="average" stroke="#8884d8" />
+            <Line
+              dot={false}
+              type="monotone"
+              dataKey="average"
+              stroke="#8884d8"
+            />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <XAxis />
             <YAxis />
@@ -33,15 +38,12 @@ class Chart extends Component {
     );
   }
 }
-const mapStateToProps = state => {
-  console.log(state);
-  return {
-    history: state.market.history
-  };
-};
+const mapStateToProps = state => ({
+  history: state.market.history
+});
 
 const mapDispatchToProps = dispatch => ({
-  changeType: type => dispatch(changeType(type))
+  changeType: type => dispatch(getGlobalMarket(type))
 });
 
 export default connect(

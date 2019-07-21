@@ -1,27 +1,36 @@
-import { callApi } from "../../Api/utils";
+import { callProxyApi } from "../../Api/utils";
 
-export const CHANGE_TYPE = "CHANGE_TYPE";
+export const CHANGE_PERIOD = "CHANGE_PERIOD";
 export const SYMBOLS = "SYMBOLS";
-export const changeType = type => async dispatch => {
-  dispatch({ type: CHANGE_TYPE, payload: type });
-  const data = await dispatch(callApi(`symbols/indices/ticker/${type}`));
+export const getGlobalMarket = type => async dispatch => {
+  const data = await dispatch(callProxyApi(`symbols/indices/ticker/${type}`));
   dispatch({ type: SYMBOLS, payload: data.symbols });
+};
+
+export const changePeriod = period => async dispatch => {
+  dispatch({ type: CHANGE_PERIOD, payload: period });
+  dispatch(changePair());
 };
 
 export const CHANGE_PAIR = "CHANGE_PAIR";
 export const HISTORY = "HISTORY";
+export const ERROR_PROXY = "ERROR_PROXY";
 export const changePair = currency => async (dispatch, getState) => {
-  dispatch({ type: CHANGE_PAIR, payload: currency });
+  currency && dispatch({ type: CHANGE_PAIR, payload: currency });
   const {
     pair: { crypto, fiat },
-    type
+    period
   } = getState().market;
-  if (crypto && fiat) {
+  if (crypto && fiat && period) {
     const data = await dispatch(
-      callApi(
-        `indices/${type}/history/${crypto + fiat}?period=monthly&format=json`
+      callProxyApi(
+        `indices/global/history/${crypto + fiat}?period=${period}&format=json`
       )
     );
-    dispatch({ type: HISTORY, payload: { [crypto + fiat]: data } });
+    if (Array.isArray(data)) {
+      dispatch({ type: HISTORY, payload: data });
+    } else {
+      dispatch({ type: ERROR_PROXY, payload: data });
+    }
   }
 };

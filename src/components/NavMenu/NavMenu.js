@@ -23,15 +23,6 @@ class NavMenu extends Component {
         >
           <Icon name="home" />
         </Menu.Item>
-        {auth && (
-          <Menu.Item
-            name="favorites"
-            as={Link}
-            to="/favorites"
-            active={activeItem === "favorites"}
-            onClick={this.handleItemClick}
-          />
-        )}
         <Menu.Item
           name="friends"
           as={Link}

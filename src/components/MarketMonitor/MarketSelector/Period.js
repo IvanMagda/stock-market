@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
-import { changeType } from "./actions";
+import { changePeriod } from "./actions";
 
-class Type extends Component {
+class Period extends Component {
   render() {
-    const { changeType, type } = this.props;
+    const { changePeriod, period } = this.props;
     return (
       <Button.Group fluid>
-        {["global", "local", "crypto", "tokens"].map(value => (
-          <Button key={value} active={value === type} onClick={() => changeType(value)}>
+        {["daily", "monthly", "alltime"].map(value => (
+          <Button
+            key={value}
+            active={value === period}
+            onClick={() => changePeriod(value)}
+          >
             {value}
           </Button>
         ))}
@@ -19,14 +23,14 @@ class Type extends Component {
 }
 
 const mapStateToProps = state => ({
-  type: state.market.type
+  period: state.market.period
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeType: type => dispatch(changeType(type))
+  changePeriod: type => dispatch(changePeriod(type))
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Type);
+)(Period);

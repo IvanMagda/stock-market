@@ -5,12 +5,16 @@ import NavMenu from "../NavMenu/NavMenu";
 import Router from "../Router/Router";
 import firebase from "../../firebase";
 import { auth } from "../User/actions";
+import { callGetFavorites } from "../Api/utils";
+import { getGlobalMarket } from "../MarketMonitor/MarketSelector/actions";
 import "./style.scss";
 
 class Layout extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(authenticated => {
       this.props.auth(!!authenticated);
+      this.props.changeType("global");
+      authenticated && this.props.callGetFavorites(authenticated.email);
     });
   }
   render() {
@@ -34,7 +38,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  auth: user => dispatch(auth(user))
+  auth: user => dispatch(auth(user)),
+  callGetFavorites: user => dispatch(callGetFavorites(user)),
+  changeType: type => dispatch(getGlobalMarket(type))
 });
 
 export default connect(

@@ -1,52 +1,46 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Menu } from "semantic-ui-react";
+import withAuthProvider from "../../Hoc/withAuthProvider";
+import { changePair } from "./actions";
 
 class Favorites extends Component {
-  state = { activeItem: "bio" };
+  handleItemClick = (e, { name }) => {
+    this.props.changePair({ crypto: name.slice(0, 3), fiat: name.slice(3, 6) });
+  };
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
   render() {
-    const { activeItem } = this.state;
+    const {
+      pair: { crypto, fiat }
+    } = this.props;
 
     return (
       <Menu fluid vertical tabular>
-        {Array(10)
-          .fill(20)
-          .map((val, idx) => (
-            <Menu.Item
-              key={idx}
-              name={`bio ${idx}`}
-              active={activeItem === `bio ${idx}`}
-              onClick={this.handleItemClick}
-            />
-          ))}
-
-        <Menu.Item
-          name="pics"
-          active={activeItem === "pics"}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Item
-          name="companies"
-          active={activeItem === "companies"}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Item
-          name="links"
-          active={activeItem === "links"}
-          onClick={this.handleItemClick}
-        />
+        {this.props.favorites.map(val => (
+          <Menu.Item
+            key={val}
+            name={val}
+            active={crypto + fiat === val}
+            onClick={this.handleItemClick}
+          />
+        ))}
       </Menu>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  favorites: state.market.favorites,
+  pair: state.market.pair
+});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  changePair: currency => dispatch(changePair(currency))
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Favorites);
+export default withAuthProvider(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Favorites)
+);
