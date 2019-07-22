@@ -1,6 +1,6 @@
 import { LOG_IN, LOG_OUT, ERROR, RESET_ERROR, AUTH } from "./actions";
 
-const defaultState = { auth: false, error: "" };
+const defaultState = { auth: "", error: "" };
 export default (state = defaultState, action) => {
   switch (action.type) {
     case LOG_OUT:

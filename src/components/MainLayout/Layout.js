@@ -12,7 +12,7 @@ import "./style.scss";
 class Layout extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(authenticated => {
-      this.props.auth(!!authenticated);
+      this.props.auth(authenticated && authenticated.email);
       this.props.changeType("global");
       authenticated && this.props.callGetFavorites(authenticated.email);
     });

@@ -3,13 +3,15 @@ import {
   CHANGE_PAIR,
   SYMBOLS,
   HISTORY,
-  ERROR_PROXY
+  ERROR_PROXY,
+  CURRENT_CHART
 } from "./actions";
-import { IS_LOADING } from "../../Api/utils";
+import { FAVORITES, IS_LOADING } from "../../Api/utils";
 
 const defaultState = {
   period: "daily",
   pair: { crypto: "", fiat: "" },
+  currentChart: "",
   isLoading: false,
   symbols: [],
   history: [],
@@ -18,12 +20,14 @@ const defaultState = {
 };
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case "FAVORITES":
+    case FAVORITES:
       return { ...state, favorites: action.payload };
     case ERROR_PROXY:
       return { ...state, error: action.payload };
     case HISTORY:
       return { ...state, history: action.payload };
+    case CURRENT_CHART:
+      return { ...state, currentChart: action.payload };
     case IS_LOADING:
       return { ...state, isLoading: action.payload };
     case SYMBOLS:

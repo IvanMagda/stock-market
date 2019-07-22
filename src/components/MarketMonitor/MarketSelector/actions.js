@@ -13,6 +13,7 @@ export const changePeriod = period => async dispatch => {
 };
 
 export const CHANGE_PAIR = "CHANGE_PAIR";
+export const CURRENT_CHART = "CURRENT_CHART";
 export const HISTORY = "HISTORY";
 export const ERROR_PROXY = "ERROR_PROXY";
 export const changePair = currency => async (dispatch, getState) => {
@@ -29,6 +30,7 @@ export const changePair = currency => async (dispatch, getState) => {
     );
     if (Array.isArray(data)) {
       dispatch({ type: HISTORY, payload: data });
+      dispatch({ type: CURRENT_CHART, payload: crypto + fiat });
     } else {
       dispatch({ type: ERROR_PROXY, payload: data });
     }

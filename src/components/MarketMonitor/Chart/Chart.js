@@ -16,6 +16,7 @@ class Chart extends Component {
     return (
       <Grid.Column stretched width={11}>
         <Segment basic>
+          <h2>{this.props.currentChart}</h2>
           <LineChart
             width={1200}
             height={650}
@@ -39,7 +40,9 @@ class Chart extends Component {
   }
 }
 const mapStateToProps = state => ({
-  history: state.market.history
+  history: state.market.history,
+  state: state,
+  currentChart: state.market.currentChart
 });
 
 const mapDispatchToProps = dispatch => ({
